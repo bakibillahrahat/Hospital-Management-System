@@ -1,0 +1,9 @@
+[
+    {
+        "id": "p-01",
+        "name": "Sakibal Hasan",
+        "email": "sakib@gmail.com",
+        "appoinment": ["a-01"],
+        "prescription": ["prs-01"]
+    }
+]
