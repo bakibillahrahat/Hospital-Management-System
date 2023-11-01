@@ -3,7 +3,7 @@
           "id": "p-01",
           "name": "sakibal hasan",
           "email": "sakib@gmail.com",
-          "appoinment": [
+          "appointment": [
                "a-01"
           ],
           "prescription": [
@@ -14,7 +14,7 @@
           "id": "p-02",
           "name": "mbr",
           "email": "mbr@gmail.com",
-          "appoinment": [
+          "appointment": [
                "a-02"
           ],
           "prescription": []
@@ -23,7 +23,7 @@
           "id": "p-03",
           "name": "ruhit",
           "email": "ruhit@gmail.com",
-          "appoinment": [
+          "appointment": [
                "a-04"
           ],
           "prescription": []
@@ -32,7 +32,7 @@
           "id": "p-04",
           "name": "shilpa",
           "email": "shilpa@gmail.com",
-          "appoinment": [
+          "appointment": [
                "a-05"
           ],
           "prescription": []
@@ -41,8 +41,17 @@
           "id": "p-05",
           "name": "koholi",
           "email": "koholi@gmail.com",
-          "appoinment": [
+          "appointment": [
                "a-06"
+          ],
+          "prescription": []
+     },
+     {
+          "id": "p-06",
+          "name": "mbrkhan",
+          "email": "mrk@gmail.com",
+          "appointment": [
+               "a-07"
           ],
           "prescription": []
      }

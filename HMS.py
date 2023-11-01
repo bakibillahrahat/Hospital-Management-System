@@ -2,14 +2,14 @@ import json
 from datetime import date
 
 userPath = "./Data/user.json"
-appoinmentPath = "./Data/appoinment.json"
+appointmentPath = "./Data/appointment.json"
 patientPath = "./Data//patient.json"
 prescriptionPath = "./Data/prescription.json"
 
 with open(userPath, 'r') as user:
     userData = json.load(user)
-with open(appoinmentPath, 'r') as appoinment:
-    appoinmentData = json.load(appoinment)
+with open(appointmentPath, 'r') as appointment:
+    appointmentData = json.load(appointment)
     
 def read(path):
     with open(path, 'r') as file:
@@ -20,12 +20,22 @@ def write(path, obj):
     with open(path, 'w') as allData:
         allData.write(obj)
 
-def login(email, password):
-  if email == 'bakibillahrahat@gmail.com' and password == '12345':
-    print(f'Welcome MD. Bakibillah Rahat')
-    print('\n1. Doctor Info\n2. Patient Info\n3. Appoinment Status')
-  else:
-    print('Invalid credential!')
+# def login(email, password):
+#     userData = read(userPath)
+#     for key,value in userData.items():
+#         for i in value:
+#             if email == i['email'] and password == i['password'] and key:
+#                 if role == 'admin':
+#                     admin_menu()
+#                 elif role == 'doctor':
+#                     doctor_menu()
+#                 else:
+#                     print("Wrong input!")
+#                 break
+#             else:
+#                 print("Invalid Credential!")
+                # break
+
 
 def autoIdGenerator(data, basePattern):
     lastId = data[-1]['id']
@@ -37,32 +47,70 @@ def autoIdGenerator(data, basePattern):
     elif count > 9:
         id = basePattern + str(count)
     return id
+# -----------Admin Part ------------------
+def admin_menu():
+    print("\n1. Doctor Management\n2. Appointment Management 3. Patient Info")
+def doctor_menu():
+    print("\n1. Appointment Info\n2. Patient Info\n3. Patient Medical Record")
+    
+def add_doctor(data):
+    name = input("Enter Doctor Name : ")
+    email = input("Enter Doctor Email: ")
+    password = input("Enter Doctor temporary password: ")
+    visit_hour = input("Enter Visit-Hour: ")
+    specialist = input("Enter the Doctor Specialization: ")
+    qualification = input("Enter Doctor Qualification: ")
+        
+    doctor_obj = {
+        "id": autoIdGenerator(data['doctor'],'d-'),
+        "name": name,
+        "email": email,
+        "password": password,
+        "visit-hour": visit_hour,
+        "Specialist": specialist,
+        "qualification": qualification
+    }
+    data['doctor'].append(doctor_obj)
+    userData_json_obj = json.dumps(data)
+    write(userPath, userData_json_obj)
+# add_doctor(userData)
 
+def read_doctor(data):
+    print("\nDoctor Info")
+    print("\nID\tName\t\t\tEmail\t\t\tVisit-Hour\tSpecialist\tQualification")
+    for i in data['doctor']:
+        print(f"{i['id'].upper()}\t{i['name'].upper()}\t\t{i['email']}\t{i['visit-hour']}\t{i['Specialist']}\t\t{i['qualification']}")
+    print("\n")
+    
+read_doctor(userData)
+    
 # -----------Patient Part ------------------
 # show doctor in table
 def show_doctor():
+    print("\nDoctor Info\n")
     print("ID\tName\t\tQualification\tVisit-Hour\n")
     for i in range(len(userData['doctor'])):
         id = userData['doctor'][i]['id']
         name = userData['doctor'][i]['name']
         qualification = userData['doctor'][i]['qualification']
         visit_hour = userData['doctor'][i]['visit-hour']
-        print(f'{id}\t{name.upper()}\t{qualification}\t\t{visit_hour}')
+        print(f'{id.upper()}\t{name.upper()}\t{qualification}\t\t{visit_hour}')
+    print("\n")
 
-# Make appoinment function 
+# Make appointment function 
 def make_appointment():
     pData = read(patientPath)
     doctor = input("Please enter your Doctor name: ").lower()
     found = False
     for i in range(len(userData['doctor'])):
         if userData['doctor'][i]['name'] == doctor:
-            aId = autoIdGenerator(appoinmentData, 'a-')
+            aId = autoIdGenerator(appointmentData, 'a-')
             pId = autoIdGenerator(pData, 'p-')
             patient = input("Enter you name: ").lower()
        
             for i in range(len(pData)):
                 if pData[i]['name'] == patient.lower(): 
-                    pData[i]['appoinment'].append(aId)
+                    pData[i]['appointment'].append(aId)
                     break
                 else:
                     email = input("Enter you email: ")
@@ -72,7 +120,7 @@ def make_appointment():
                         "id": pId,
                         "name": patient,
                         "email": email,
-                        "appoinment": apnArr,
+                        "appointment": apnArr,
                         "prescription": []
                     } 
                     pData.append(patientObj)
@@ -80,7 +128,7 @@ def make_appointment():
             doctor = userData['doctor'][i]['name']
             time = userData['doctor'][i]['visit-hour']
             today = date.today()       
-            appoinment = {
+            appointment = {
                 "id": aId,
                 "doctorName": doctor,
                 "patientName": patient,
@@ -88,14 +136,14 @@ def make_appointment():
                 "date": str(today)
             }
 
-            appoinmentData.append(appoinment)
+            appointmentData.append(appointment)
                     
             pData_json_obj = json.dumps(pData, indent=5)
             write(patientPath, pData_json_obj)
             
-            apnData_json_object = json.dumps(appoinmentData, indent=5)
-            write(appoinmentPath, apnData_json_object)
-            print("Appoinment Create Successfully!")
+            apnData_json_object = json.dumps(appointmentData, indent=5)
+            write(appointmentPath, apnData_json_object)
+            print("Appointment Create Successfully!")
             
             found = True
             break
@@ -104,29 +152,29 @@ def make_appointment():
   
 # make_appointment()
 
-# read appoinment history
-def read_appoinment():
+# read appointment history
+def read_appointment():
     patientData = read(patientPath)
     name = input("Please enter your name: ").lower()
     for i in range(len(patientData)):
         if name == patientData[i]['name']:
-            print(patientData[i]['appoinment'])
-            des = input("Do you want to cancel appoinment: ")
+            print(patientData[i]['appointment'])
+            des = input("Do you want to cancel appointment: ")
             if des == "yes":
-                apnId = input("Enter your appoinment ID: ")
-                patientData[i]['appoinment'].remove(apnId)
-                for apn in range(len(appoinmentData)):
-                    if apnId == appoinmentData[apn]["id"]:
-                        del appoinmentData[apn]
+                apnId = input("Enter your appointment ID: ")
+                patientData[i]['appointment'].remove(apnId)
+                for apn in range(len(appointmentData)):
+                    if apnId == appointmentData[apn]["id"]:
+                        del appointmentData[apn]
                         break
                     else:
                         pass
             else:
                 pass    
             patientData_json_obj = json.dumps(patientData, indent=5)
-            appoinmentData_json_obj = json.dumps(appoinmentData, indent=5)
+            appointmentData_json_obj = json.dumps(appointmentData, indent=5)
             write(patientPath, patientData_json_obj)
-            write(appoinmentPath, appoinmentData_json_obj)
+            write(appointmentPath, appointmentData_json_obj)
             print("Appointment successfully deleted")
             break
 
@@ -152,7 +200,7 @@ def see_history():
 
 # see_history()
 print("Hospital Management System")
-print("\n1. Admin Login \n2. Doctor Login\n3. Make Appoinment for patient\n4. Exit from the System")
+print("\n1. Login for (Admin & Doctor)\n2. Make Appointment for patient\n3. Exit from the System")
 
 for i in range(3):
   a = int(input("\nEnter your choice: "))
@@ -161,26 +209,26 @@ for i in range(3):
       print(f'you can make {i} attempt')
       email = input("Enter you email: ")
       password = input("Enter your password: ")
-      login(email, password)
+      role = input("Enter your role: ")
+      login(email, password, role)
       break
   elif a == 2:
-      print("Doctor login")
-  elif a == 3:
       for i in range(3):
-        print("\n1. Make Appoinment\n2. See Appoinment\n3. Previous Medical Record")
+        print("\n1. Make Appointment\n2. See Appointment\n3. Previous Medical Record")
         pChoice = int(input("\nEnter your choice (For Patient): "))
         if pChoice == 1:
+            show_doctor()
             make_appointment()
             break
         elif pChoice == 2:
-            read_appoinment()
+            read_appointment()
             break
         elif pChoice == 3:
             see_history()
             break
         else:
             print("Please enter correct number.")
-  elif a == 4:
+  elif a == 3:
     print("Exit From the system....")
     break
   else:
