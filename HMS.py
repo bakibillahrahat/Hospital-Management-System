@@ -62,6 +62,7 @@ def make_appointment():
             for i in range(len(pData)):
                 if pData[i]['name'] == patient.lower(): 
                     pData[i]['appoinment'].append(aId)
+                    break
                 else:
                     email = input("Enter you email: ")
                     apnArr = []
@@ -74,6 +75,7 @@ def make_appointment():
                         "prescription": []
                     } 
                     pData.append(patientObj)
+                    break
             doctor = userData['doctor'][i]['name']
             time = userData['doctor'][i]['visit-hour']
             today = date.today()       

@@ -1,8 +1,8 @@
 [
     {
         "prescriptionId": "prs-01",
-        "doctorName": "Nafisa Maliyat",
-        "patientName": "Sakibal Hasan",
+        "doctorName": "nafisa Maliyat",
+        "patientName": "sakibal Hasan",
         "disease": "fever",
         "medicine": ["Tylenol","Advil"],
         "test": ["CBC"]

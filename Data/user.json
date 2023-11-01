@@ -1,7 +1,7 @@
 {
     "admin": [
         {
-            "name": "MD. Bakibillah Rahat",
+            "name": "md. bakibillah rahat",
             "email": "bakibillahrahat@gmail.com",
             "password": "12345"
         }
@@ -9,7 +9,7 @@
     "doctor": [
         {
             "id": "d-01",
-            "name": "Nafisa Maliyat",
+            "name": "nafisa maliyat",
             "email": "nafisa@gmail.com",
             "password": "12345",
             "visit-hour": "04pm-10pm",
@@ -19,7 +19,7 @@
         },
         {
             "id": "d-02",
-            "name": "Rahat Khan",
+            "name": "rahat khan",
             "email": "nafisakhan@gmail.com",
             "password": "12345",
             "visit-hour": "05pm-07pm",
