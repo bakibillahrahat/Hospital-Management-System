@@ -4,6 +4,7 @@ import json
 userPath = "./Data/user.json"
 appoinmentPath = "./Data/appoinment.json"
 patientPath = "./Data//patient.json"
+prescriptionPath = "./Data/prescription.json"
 
 with open(userPath, 'r') as user:
     userData = json.load(user)
@@ -101,10 +102,32 @@ def make_appointment():
     if not found:
         print("Doctor not found!")
   
-make_appointment()
+# make_appointment()
+
+# read appoinment history
+# def read_appoinment():
+    
 
 # See Patient History
-    
+def see_history():
+    patientData = read(patientPath)
+    historyData = read(prescriptionPath)
+    name = input("Please enter your name: ").lower()
+    for i in range(len(patientData)):
+        if name == patientData[i]['name']:
+            print(patientData[i]['prescription'])
+            prisId = input("Enter your prescription ID: ")
+            for sp in range(len(historyData)):
+                if historyData[sp]['prescriptionId'] == prisId:
+                    for key, value in historyData[sp].items():
+                        print(f"\t{key}:\t{value}")
+                    break
+            break
+        else:
+            print("You entered wrong name!")
+            break
+
+see_history()
 # print("Hospital Management System")
 # print("\n1. Admin Login \n2. Doctor Login\n3. Make Appoinment for patient\n4. Exit from the System")
 
