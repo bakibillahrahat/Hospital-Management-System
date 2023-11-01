@@ -1,5 +1,5 @@
-from datetime import date
 import json
+from datetime import date
 
 userPath = "./Data/user.json"
 appoinmentPath = "./Data/appoinment.json"
@@ -105,8 +105,20 @@ def make_appointment():
 # make_appointment()
 
 # read appoinment history
-# def read_appoinment():
+def read_appoinment():
+    patientData = read(patientPath)
+    name = input("Please enter your name: ").lower()
+    for i in range(len(patientData)):
+        if name == patientData[i]['name']:
+            print(patientData[i]['appoinment'])
+
+def cancel_appoinment():
+    patientData = read(patientPath)
+    appnID = input("Please enter your appoinment ID: ")
+    patientData
     
+    
+# read_appoinment()
 
 # See Patient History
 def see_history():
@@ -127,25 +139,41 @@ def see_history():
             print("You entered wrong name!")
             break
 
-see_history()
-# print("Hospital Management System")
-# print("\n1. Admin Login \n2. Doctor Login\n3. Make Appoinment for patient\n4. Exit from the System")
+# see_history()
+print("Hospital Management System")
+print("\n1. Admin Login \n2. Doctor Login\n3. Make Appoinment for patient\n4. Exit from the System")
 
-# for i in range(3):
-#   a = int(input("Enter your choice: "))
-#   if a == 1:
-#     for i in range(2):
-#       print(f'you can make {i} attempt')
-#       email = input("Enter you email: ")
-#       password = input("Enter your password: ")
-#       login(email, password)
-#       break
-#   elif a == 2:
-#       print("Doctor login")
-#   elif a == 3:
-#     print("Appoinment function")
-#   elif a == 4:
-#     print("Exit From the system....")
-#     break
-#   else:
-#     print("Please enter correct number: ")
+for i in range(3):
+  a = int(input("\nEnter your choice: "))
+  if a == 1:
+    for i in range(2):
+      print(f'you can make {i} attempt')
+      email = input("Enter you email: ")
+      password = input("Enter your password: ")
+      login(email, password)
+      break
+  elif a == 2:
+      print("Doctor login")
+  elif a == 3:
+      for i in range(3):
+        print("\n1. Make Appoinment\n2. See Appoinment\n3. Cancel Appoinment\n4. Previous Medical Record")
+        pChoice = int(input("\nEnter your choice (For Patient): "))
+        if pChoice == 1:
+            make_appointment()
+            break
+        elif pChoice == 2:
+            read_appoinment()
+            break
+        elif pChoice == 3:
+            cancel_appoinment()
+            break
+        elif pChoice == 4:
+            see_history()
+            break
+        else:
+            print("Please enter correct number.")
+  elif a == 4:
+    print("Exit From the system....")
+    break
+  else:
+    print("Please enter correct number: ")

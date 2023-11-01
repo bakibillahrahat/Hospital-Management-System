@@ -33,5 +33,12 @@
           "patientName": "shilpa",
           "time": "04pm-10pm",
           "date": "2023-11-01"
+     },
+     {
+          "id": "a-06",
+          "doctorName": "nafisa maliyat",
+          "patientName": "koholi",
+          "time": "04pm-10pm",
+          "date": "2023-11-01"
      }
 ]
