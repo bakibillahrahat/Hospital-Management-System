@@ -111,14 +111,25 @@ def read_appoinment():
     for i in range(len(patientData)):
         if name == patientData[i]['name']:
             print(patientData[i]['appoinment'])
+            des = input("Do you want to cancel appoinment: ")
+            if des == "yes":
+                apnId = input("Enter your appoinment ID: ")
+                patientData[i]['appoinment'].remove(apnId)
+                for apn in range(len(appoinmentData)):
+                    if apnId == appoinmentData[apn]["id"]:
+                        del appoinmentData[apn]
+                        break
+                    else:
+                        pass
+            else:
+                pass    
+            patientData_json_obj = json.dumps(patientData, indent=5)
+            appoinmentData_json_obj = json.dumps(appoinmentData, indent=5)
+            write(patientPath, patientData_json_obj)
+            write(appoinmentPath, appoinmentData_json_obj)
+            print("Appointment successfully deleted")
+            break
 
-def cancel_appoinment():
-    patientData = read(patientPath)
-    appnID = input("Please enter your appoinment ID: ")
-    patientData
-    
-    
-# read_appoinment()
 
 # See Patient History
 def see_history():
@@ -156,7 +167,7 @@ for i in range(3):
       print("Doctor login")
   elif a == 3:
       for i in range(3):
-        print("\n1. Make Appoinment\n2. See Appoinment\n3. Cancel Appoinment\n4. Previous Medical Record")
+        print("\n1. Make Appoinment\n2. See Appoinment\n3. Previous Medical Record")
         pChoice = int(input("\nEnter your choice (For Patient): "))
         if pChoice == 1:
             make_appointment()
@@ -165,9 +176,6 @@ for i in range(3):
             read_appoinment()
             break
         elif pChoice == 3:
-            cancel_appoinment()
-            break
-        elif pChoice == 4:
             see_history()
             break
         else:

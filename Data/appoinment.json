@@ -1,8 +1,8 @@
 [
      {
           "id": "a-01",
-          "doctorName": "Nafisa Maliyat",
-          "patientName": "Sakibal Hasan",
+          "doctorName": "nafisa Maliyat",
+          "patientName": "sakibal Hasan",
           "Time": "4pm-10pm",
           "Date": "2023-11-01"
      },
@@ -10,13 +10,6 @@
           "id": "a-02",
           "doctorName": "nafisa maliyat",
           "patientName": "mbr",
-          "time": "04pm-10pm",
-          "date": "2023-11-01"
-     },
-     {
-          "id": "a-03",
-          "doctorName": "nafisa maliyat",
-          "patientName": "sakibal hasan",
           "time": "04pm-10pm",
           "date": "2023-11-01"
      },
