@@ -1,15 +1,13 @@
 import json
 from datetime import date
 
+# ---------------Data Path-----------------------
 userPath = "./Data/user.json"
 appointmentPath = "./Data/appointment.json"
 patientPath = "./Data//patient.json"
 prescriptionPath = "./Data/prescription.json"
 
-with open(userPath, 'r') as user:
-    userData = json.load(user)
-with open(appointmentPath, 'r') as appointment:
-    appointmentData = json.load(appointment)
+# -----------------File Read And Write Function ---------------------
     
 def read(path):
     with open(path, 'r') as file:
@@ -20,7 +18,11 @@ def write(path, obj):
     with open(path, 'w') as allData:
         allData.write(obj)
         
-# Authentication function
+# -----------------------Data--------------------------
+userData = read(userPath)
+appointmentData = read(appointmentPath)
+        
+# -------------------Authentication function------------------------
 def authenticate_admin(email, password, users):
     for admin in users.get("admin", []):
         if admin["email"] == email and admin["password"] == password:
@@ -49,7 +51,7 @@ def login(email, password, role):
     else:
         print("Login failed. Check your credentials.")
 
-
+# --------------Auto ID Generator Functions---------------------
 def autoIdGenerator(data, basePattern):
     lastId = data[-1]['id']
     count = int(lastId[-1])
@@ -94,8 +96,20 @@ def admin_menu():
         else:
             print("Invalid option")
             break
+# -----------Doctor Part ------------------
 def doctor_menu():
     print("\n1. Appointment Info\n2. Patient Info\n3. Patient Medical Record")
+# ------------------Doctor Management----------------------- 
+# Read Doctor Info
+
+def read_doctor(data):
+    print("\nDoctor Info")
+    print("\nID\tName\t\t\tEmail\t\t\tVisit-Hour\tSpecialist\tQualification")
+    for i in data['doctor']:
+        print(f"{i['id'].upper()}\t{i['name'].upper()}\t\t{i['email']}\t{i['visit-hour']}\t{i['Specialist']}\t\t{i['qualification']}")
+    print("\n")
+    
+# Add New Doctor
     
 def add_doctor(data):
     name = input("Enter Doctor Name : ")
@@ -137,6 +151,8 @@ def add_doctor(data):
 #     data['doctor'].append(doctor_obj)
 #     userData_json_obj = json.dumps(data, indent=7)
 #     write(userPath, userData_json_obj)
+
+# Delete Doctor
 def delete_doctor(data):
     id = input("Enter Doctor ID: ")
     for i in data['doctor']:
@@ -152,13 +168,6 @@ def delete_doctor(data):
             break
 delete_doctor(userData)
 # add_doctor(userData)                       
-
-def read_doctor(data):
-    print("\nDoctor Info")
-    print("\nID\tName\t\t\tEmail\t\t\tVisit-Hour\tSpecialist\tQualification")
-    for i in data['doctor']:
-        print(f"{i['id'].upper()}\t{i['name'].upper()}\t\t{i['email']}\t{i['visit-hour']}\t{i['Specialist']}\t\t{i['qualification']}")
-    print("\n")
     
 def read_patient(data):
     print("\nPatient Info\n")
