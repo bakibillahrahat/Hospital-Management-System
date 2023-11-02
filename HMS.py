@@ -21,6 +21,8 @@ def write(path, obj):
 # -----------------------Data--------------------------
 userData = read(userPath)
 appointmentData = read(appointmentPath)
+patientData = read(patientPath)
+historyData = read(prescriptionPath)
         
 # -------------------Authentication function------------------------
 def authenticate_admin(email, password, users):
@@ -64,32 +66,38 @@ def autoIdGenerator(data, basePattern):
     return id
 # -----------Admin Part ------------------
 def admin_menu():
-    for i in range(3):
+    while True:
         print("\n1. Doctor Management\n2. Appointment Management\n3. Patient Info\n4. Back Main Menu\n")
         choice = int(input("Enter you choice from (Admin Menu): "))
         
         if choice == 1:
             read_doctor(userData)
             while True:
-                print("\n1. ADD Doctor\n2. Update Doctor\n3. Delete Doctor\n4. Back Previous Menu\n")
+                print("\n1. ADD Doctor\n2. Doctor List\n3. Update Doctor\n4. Delete Doctor\n5. Back Previous Menu\n")
                 choice = int(input("Enter your choice for (Doctor Management): "))
                 if choice == 1:
                     add_doctor(userData)
                     read_doctor(userData)
                 elif choice == 2:
+                    read_doctor(userData)
+                elif choice == 3:
                     # update_doctor(userData)
                     print("UPdated Doctor")
-                elif choice == 3:
-                    delete_doctor(userData)
                 elif choice == 4:
+                    delete_doctor(userData)
+                elif choice == 5:
                     break
                 else:
                     print("Option not in the list")
                     break
         elif choice == 2:
             read_appointment_info(appointmentData)
+            cancelApn = input("Do you want to cancel Appointment: (y/n) ").lower()
+            if cancelApn == "y":
+                cancel_appointment(appointmentData, patientData)
+            else:
+                pass
         elif choice == 3:
-            patientData = read(patientPath)
             read_patient(patientData)
         elif choice == 4:
             break
@@ -155,20 +163,24 @@ def add_doctor(data):
 # Delete Doctor
 def delete_doctor(data):
     id = input("Enter Doctor ID: ")
+    flag = False
     for i in data['doctor']:
         if id == i['id']:
+            print(id, i['id'])
             index = data['doctor'].index(i)
+            print(index, type(index))
             del data['doctor'][index]
+            print(data)
             userData_json_obj = json.dumps(data, indent=5)
             write(userPath, userData_json_obj)
-            print("Successfully Delete Doctor Info!")
+            flag = True
             break
-        else:
-            print("Doctor not in the list")
-            break
-delete_doctor(userData)
-# add_doctor(userData)                       
-    
+    if flag :
+        print("Doctor Info deleted Successfully!")
+    else:
+        print("Doctor not Registered!")
+
+# Patient Info Read
 def read_patient(data):
     print("\nPatient Info\n")
     print("\nID\tName\t\t\tEmail\t\t\tAppointment\tPrescription")
@@ -177,38 +189,42 @@ def read_patient(data):
 
 # read_patient(patientData)
 
+# Read Appointment Info
 def read_appointment_info(data):
     print("\nAppointment Info\n")
     print("\nID\tDoctor Name\t\tPatient Name\t\tTime\tDate\n")
     for i in data:
         print(f"{i['id'].upper()}\t{i['doctorName'].upper()}\t\t{i['patientName'].upper()}\t{i['time']}\t{i['date']}\n")
+        
+# Cancel Appointment 
 def cancel_appointment(apnData, ptData):
     id = input("Enter Appointment ID: ")
+    print(id)
     patient = ""
+
     for i in apnData:
-        if id == i['id']:
+        if id.lower() == i['id']:
             index = apnData.index(i)
             del apnData[index]
             patient = i['patientName']
+            print(apnData)
             break
-        else:
-            print("Appointment Not Found")
-            break
-        
+    else:
+        print("Appointment Not Found")
+
+
     for p in ptData:
         if p['name'] == patient:
-            p['appointment'].remove(id)
+            p['appointment'].remove(id.lower())
+            print(ptData)
             break
-        else:
-            print("not match")
-            break
+    else:
+        print("not match")
     apnData_json_obj = json.dumps(apnData, indent=5)
     ptData_json_obj = json.dumps(ptData, indent=5)
     write(appointmentPath, apnData_json_obj)
     write(patientPath, ptData_json_obj)
     print("Appointment cancel Successfully")
-    
-# cancel_appointment(appointmentData, patientData)
 # read_appointment_info(appointmentData)
 # -----------Patient Part ------------------
 # show doctor in table
@@ -224,8 +240,8 @@ def show_doctor():
     print("\n")
 
 # Make appointment function 
-def make_appointment():
-    pData = read(patientPath)
+def make_appointment(pData):
+    # pData = read(patientPath)
     doctor = input("Please enter your Doctor name: ").lower()
     found = False
     for i in range(len(userData['doctor'])):
@@ -279,8 +295,8 @@ def make_appointment():
 # make_appointment()
 
 # read appointment history
-def read_appointment():
-    patientData = read(patientPath)
+def read_appointment(patientData):
+    # patientData = read(patientPath)
     name = input("Please enter your name: ").lower()
     for i in range(len(patientData)):
         if name == patientData[i]['name']:
@@ -306,9 +322,9 @@ def read_appointment():
 # read_appointment()
 
 # See Patient History
-def see_history():
-    patientData = read(patientPath)
-    historyData = read(prescriptionPath)
+def see_history(patientData, historyData):
+    # patientData = read(patientPath)
+    # historyData = read(prescriptionPath)
     name = input("Patient Name: ").lower()
     for i in range(len(patientData)):
         if name == patientData[i]['name']:
@@ -326,7 +342,7 @@ def see_history():
 
 # see_history()
 print("Hospital Management System")
-for i in range(3):
+while True:
     print("\n1. Login for (Admin & Doctor)\n2. Make Appointment for patient\n3. Exit from the System")
     a = int(input("\nEnter your choice: "))
     if a == 1:
@@ -337,18 +353,17 @@ for i in range(3):
             login(email, password, role)
             break
     elif a == 2:
-        for i in range(3):
-            print("\n1. Make Appointment\n2. See Appointment\n3. Previous Medical Record")
+        while True:
+            print("\n1. Make Appointment\n2. See Appointment\n3. Previous Medical Record\n4. Back Main Menu\n")
             pChoice = int(input("\nEnter your choice (For Patient): "))
             if pChoice == 1:
                 show_doctor()
-                make_appointment()
-                break
+                make_appointment(patientData)
             elif pChoice == 2:
-                read_appointment()
-                break
+                read_appointment(patientData)
             elif pChoice == 3:
-                see_history()
+                see_history(patientData, historyData)
+            elif pChoice == 4:
                 break
             else:
                 print("Please enter correct number.")
