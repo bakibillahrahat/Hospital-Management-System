@@ -231,36 +231,32 @@ def make_appointment(pData, uData, aData):
         print("Doctor not found!")
 
 # read appointment history
-def read_appointment(patientData):
-    # patientData = read(patientPath)
+def read_appointment(pData, aData):
     name = input("Please enter your name: ").lower()
-    for i in range(len(patientData)):
-        if name == patientData[i]['name']:
-            print(patientData[i]['appointment'])
+    for i in range(len(pData)):
+        if name == pData[i]['name']:
+            print(pData[i]['appointment'])
             des = input("Do you want to cancel appointment (y/n): ").lower()
             if des == "y":
                 apnId = input("Enter your appointment ID: ")
-                patientData[i]['appointment'].remove(apnId)
-                for apn in range(len(appointmentData)):
-                    if apnId == appointmentData[apn]["id"]:
-                        del appointmentData[apn]
+                pData[i]['appointment'].remove(apnId)
+                for apn in range(len(aData)):
+                    if apnId == aData[apn]["id"]:
+                        del aData[apn]
                         break
                     else:
                         pass
             else:
                 pass    
-            patientData_json_obj = json.dumps(patientData, indent=5)
-            appointmentData_json_obj = json.dumps(appointmentData, indent=5)
+            patientData_json_obj = json.dumps(pData, indent=5)
+            appointmentData_json_obj = json.dumps(aData, indent=5)
             write(patientPath, patientData_json_obj)
             write(appointmentPath, appointmentData_json_obj)
             print("Appointment successfully deleted")
             break
-# read_appointment()
 
 # See Patient History
 def see_history(patientData, historyData):
-    # patientData = read(patientPath)
-    # historyData = read(prescriptionPath)
     name = input("Patient Name: ").lower()
     for i in range(len(patientData)):
         if name == patientData[i]['name']:
@@ -320,7 +316,19 @@ def admin_menu():
 # -----------------------------Doctor Menu--------------
 
 def doctor_menu():
-    print("\n1. Appointment Info\n2. Patient Info\n3. Patient Medical Record")
+    while True:
+        print("\n1. Appointment Info\n2. Patient Info\n3. Make Prescription \n4. Back Main Menu")
+        choice = int(input("Enter your choice: "))
+        if choice == 1:
+            print("Appointment Info")
+        elif choice == 2:
+            read_patient(patientData)
+        elif choice == 3:
+            print("Make prescription")
+        elif choice == 4:
+            break
+        else:
+            print("Option NOt found!")
 
 # -------------------Authentication function------------------------
 def authenticate_admin(email, password, users):
@@ -373,7 +381,7 @@ while True:
                 show_doctor()
                 make_appointment(patientData, userData, appointmentData)
             elif pChoice == 2:
-                read_appointment(patientData)
+                read_appointment(patientData, appointmentData)
             elif pChoice == 3:
                 see_history(patientData, historyData)
             elif pChoice == 4:
