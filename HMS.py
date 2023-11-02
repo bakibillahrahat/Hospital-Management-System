@@ -82,7 +82,7 @@ def admin_menu():
                     read_doctor(userData)
                 elif choice == 3:
                     # update_doctor(userData)
-                    print("UPdated Doctor")
+                    update_doctor(userData)
                 elif choice == 4:
                     delete_doctor(userData)
                 elif choice == 5:
@@ -139,28 +139,43 @@ def add_doctor(data):
     data['doctor'].append(doctor_obj)
     userData_json_obj = json.dumps(data, indent=5)
     write(userPath, userData_json_obj)
-# def update_doctor(data):
-#     name = input("Enter Doctor Name : ")
-#     email = input("Enter Doctor Email: ")
-#     password = input("Enter Doctor temporary password: ")
-#     visit_hour = input("Enter Visit-Hour: ")
-#     specialist = input("Enter the Doctor Specialization: ")
-#     qualification = input("Enter Doctor Qualification: ")
-        
-#     doctor_obj = {
-#         "id": autoIdGenerator(data['doctor'],'d-'),
-#         "name": name,
-#         "email": email,
-#         "password": password,
-#         "visit-hour": visit_hour,
-#         "Specialist": specialist,
-#         "qualification": qualification
-#     }
-#     data['doctor'].append(doctor_obj)
-#     userData_json_obj = json.dumps(data, indent=7)
-#     write(userPath, userData_json_obj)
+# Update Doctor
+def update_doctor(data):
+    doctor_id = input("Enter the ID of the doctor you want to update: ").lower()
 
-# Delete Doctor
+    found = False
+    for doctor in data['doctor']:
+        if doctor['id'] == doctor_id:
+            print(doctor_id, doctor['id'])
+            found = True
+            print("\nID\tName\t\t\tEmail\t\t\tVisit-Hour\tSpecialist\tQualification\n")
+            print(f"{doctor['id'].upper()}\t{doctor['name'].upper()}\t\t{doctor['email']}\t{doctor['visit-hour']}\t{doctor['Specialist']}\t\t{doctor['qualification']}\n")
+            print("Doctor found. Please update their information: \n")
+            name = doctor['name']
+            email = input("Enter Doctor Email: ")
+            password = doctor['password']
+            visit_hour = input("Enter Visit-Hour: ")
+            specialist = input("Enter the Doctor Specialization: ")
+            qualification = input("Enter Doctor Qualification: ")
+
+            doctor.update({
+                "name": name,
+                "email": email,
+                "password": password,
+                "visit-hour": visit_hour,
+                "Specialist": specialist,
+                "qualification": qualification
+            })
+
+            userData_json_obj = json.dumps(data, indent=5)
+            write(userPath, userData_json_obj)
+            print("Doctor information updated successfully.")
+            break
+
+    if not found:
+        print(f"Doctor with ID {doctor_id} not found.")
+
+
 def delete_doctor(data):
     id = input("Enter Doctor ID: ")
     flag = False
