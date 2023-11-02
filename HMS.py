@@ -19,22 +19,35 @@ def read(path):
 def write(path, obj):
     with open(path, 'w') as allData:
         allData.write(obj)
+        
+# Authentication function
+def authenticate_admin(email, password, users):
+    for admin in users.get("admin", []):
+        if admin["email"] == email and admin["password"] == password:
+            admin = admin_menu()
+            return admin
+    return None
 
-# def login(email, password):
-#     userData = read(userPath)
-#     for key,value in userData.items():
-#         for i in value:
-#             if email == i['email'] and password == i['password'] and key:
-#                 if role == 'admin':
-#                     admin_menu()
-#                 elif role == 'doctor':
-#                     doctor_menu()
-#                 else:
-#                     print("Wrong input!")
-#                 break
-#             else:
-#                 print("Invalid Credential!")
-                # break
+def authenticate_doctor(email, password, users):
+    for doctor in users.get("doctor", []):
+        if doctor["email"] == email and doctor["password"] == password:
+            doctor = doctor_menu()
+            return doctor
+    return None
+
+def login(email, password, role):
+
+    authenticated_user = None
+    if role == "admin":
+        authenticated_user = authenticate_admin(email, password, userData)
+    elif role == "doctor":
+        authenticated_user = authenticate_doctor(email, password, userData)
+    
+    if authenticated_user:
+        print("Login successful")
+        print("User details:", authenticated_user)
+    else:
+        print("Login failed. Check your credentials.")
 
 
 def autoIdGenerator(data, basePattern):
@@ -49,7 +62,38 @@ def autoIdGenerator(data, basePattern):
     return id
 # -----------Admin Part ------------------
 def admin_menu():
-    print("\n1. Doctor Management\n2. Appointment Management 3. Patient Info")
+    for i in range(3):
+        print("\n1. Doctor Management\n2. Appointment Management\n3. Patient Info\n4. Back Main Menu\n")
+        choice = int(input("Enter you choice from (Admin Menu): "))
+        
+        if choice == 1:
+            read_doctor(userData)
+            while True:
+                print("\n1. ADD Doctor\n2. Update Doctor\n3. Delete Doctor\n4. Back Previous Menu\n")
+                choice = int(input("Enter your choice for (Doctor Management): "))
+                if choice == 1:
+                    add_doctor(userData)
+                    read_doctor(userData)
+                elif choice == 2:
+                    # update_doctor(userData)
+                    print("UPdated Doctor")
+                elif choice == 3:
+                    delete_doctor(userData)
+                elif choice == 4:
+                    break
+                else:
+                    print("Option not in the list")
+                    break
+        elif choice == 2:
+            read_appointment_info(appointmentData)
+        elif choice == 3:
+            patientData = read(patientPath)
+            read_patient(patientData)
+        elif choice == 4:
+            break
+        else:
+            print("Invalid option")
+            break
 def doctor_menu():
     print("\n1. Appointment Info\n2. Patient Info\n3. Patient Medical Record")
     
@@ -71,9 +115,43 @@ def add_doctor(data):
         "qualification": qualification
     }
     data['doctor'].append(doctor_obj)
-    userData_json_obj = json.dumps(data)
+    userData_json_obj = json.dumps(data, indent=5)
     write(userPath, userData_json_obj)
-# add_doctor(userData)
+# def update_doctor(data):
+#     name = input("Enter Doctor Name : ")
+#     email = input("Enter Doctor Email: ")
+#     password = input("Enter Doctor temporary password: ")
+#     visit_hour = input("Enter Visit-Hour: ")
+#     specialist = input("Enter the Doctor Specialization: ")
+#     qualification = input("Enter Doctor Qualification: ")
+        
+#     doctor_obj = {
+#         "id": autoIdGenerator(data['doctor'],'d-'),
+#         "name": name,
+#         "email": email,
+#         "password": password,
+#         "visit-hour": visit_hour,
+#         "Specialist": specialist,
+#         "qualification": qualification
+#     }
+#     data['doctor'].append(doctor_obj)
+#     userData_json_obj = json.dumps(data, indent=7)
+#     write(userPath, userData_json_obj)
+def delete_doctor(data):
+    id = input("Enter Doctor ID: ")
+    for i in data['doctor']:
+        if id == i['id']:
+            index = data['doctor'].index(i)
+            del data['doctor'][index]
+            userData_json_obj = json.dumps(data, indent=5)
+            write(userPath, userData_json_obj)
+            print("Successfully Delete Doctor Info!")
+            break
+        else:
+            print("Doctor not in the list")
+            break
+delete_doctor(userData)
+# add_doctor(userData)                       
 
 def read_doctor(data):
     print("\nDoctor Info")
@@ -82,8 +160,47 @@ def read_doctor(data):
         print(f"{i['id'].upper()}\t{i['name'].upper()}\t\t{i['email']}\t{i['visit-hour']}\t{i['Specialist']}\t\t{i['qualification']}")
     print("\n")
     
-read_doctor(userData)
+def read_patient(data):
+    print("\nPatient Info\n")
+    print("\nID\tName\t\t\tEmail\t\t\tAppointment\tPrescription")
+    for i in data:
+            print(f"{i['id'].upper()}\t{i['name'].upper()}\t\t{i['email']}\t{i['appointment']}\t{i['prescription']}\n")
+
+# read_patient(patientData)
+
+def read_appointment_info(data):
+    print("\nAppointment Info\n")
+    print("\nID\tDoctor Name\t\tPatient Name\t\tTime\tDate\n")
+    for i in data:
+        print(f"{i['id'].upper()}\t{i['doctorName'].upper()}\t\t{i['patientName'].upper()}\t{i['time']}\t{i['date']}\n")
+def cancel_appointment(apnData, ptData):
+    id = input("Enter Appointment ID: ")
+    patient = ""
+    for i in apnData:
+        if id == i['id']:
+            index = apnData.index(i)
+            del apnData[index]
+            patient = i['patientName']
+            break
+        else:
+            print("Appointment Not Found")
+            break
+        
+    for p in ptData:
+        if p['name'] == patient:
+            p['appointment'].remove(id)
+            break
+        else:
+            print("not match")
+            break
+    apnData_json_obj = json.dumps(apnData, indent=5)
+    ptData_json_obj = json.dumps(ptData, indent=5)
+    write(appointmentPath, apnData_json_obj)
+    write(patientPath, ptData_json_obj)
+    print("Appointment cancel Successfully")
     
+# cancel_appointment(appointmentData, patientData)
+# read_appointment_info(appointmentData)
 # -----------Patient Part ------------------
 # show doctor in table
 def show_doctor():
@@ -177,13 +294,13 @@ def read_appointment():
             write(appointmentPath, appointmentData_json_obj)
             print("Appointment successfully deleted")
             break
-
+# read_appointment()
 
 # See Patient History
 def see_history():
     patientData = read(patientPath)
     historyData = read(prescriptionPath)
-    name = input("Please enter your name: ").lower()
+    name = input("Patient Name: ").lower()
     for i in range(len(patientData)):
         if name == patientData[i]['name']:
             print(patientData[i]['prescription'])
@@ -200,36 +317,34 @@ def see_history():
 
 # see_history()
 print("Hospital Management System")
-print("\n1. Login for (Admin & Doctor)\n2. Make Appointment for patient\n3. Exit from the System")
-
 for i in range(3):
-  a = int(input("\nEnter your choice: "))
-  if a == 1:
-    for i in range(2):
-      print(f'you can make {i} attempt')
-      email = input("Enter you email: ")
-      password = input("Enter your password: ")
-      role = input("Enter your role: ")
-      login(email, password, role)
-      break
-  elif a == 2:
-      for i in range(3):
-        print("\n1. Make Appointment\n2. See Appointment\n3. Previous Medical Record")
-        pChoice = int(input("\nEnter your choice (For Patient): "))
-        if pChoice == 1:
-            show_doctor()
-            make_appointment()
+    print("\n1. Login for (Admin & Doctor)\n2. Make Appointment for patient\n3. Exit from the System")
+    a = int(input("\nEnter your choice: "))
+    if a == 1:
+        for i in range(3):
+            email = input("Enter you email: ")
+            password = input("Enter your password: ")
+            role = input("Enter your role: ")
+            login(email, password, role)
             break
-        elif pChoice == 2:
-            read_appointment()
-            break
-        elif pChoice == 3:
-            see_history()
-            break
-        else:
-            print("Please enter correct number.")
-  elif a == 3:
-    print("Exit From the system....")
-    break
-  else:
-    print("Please enter correct number: ")
+    elif a == 2:
+        for i in range(3):
+            print("\n1. Make Appointment\n2. See Appointment\n3. Previous Medical Record")
+            pChoice = int(input("\nEnter your choice (For Patient): "))
+            if pChoice == 1:
+                show_doctor()
+                make_appointment()
+                break
+            elif pChoice == 2:
+                read_appointment()
+                break
+            elif pChoice == 3:
+                see_history()
+                break
+            else:
+                print("Please enter correct number.")
+    elif a == 3:
+        print("Exit From the system....")
+        break
+    else:
+        print("Please enter correct number: ")

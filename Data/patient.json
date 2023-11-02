@@ -3,9 +3,7 @@
           "id": "p-01",
           "name": "sakibal hasan",
           "email": "sakib@gmail.com",
-          "appointment": [
-               "a-01"
-          ],
+          "appointment": [],
           "prescription": [
                "prs-01"
           ]
