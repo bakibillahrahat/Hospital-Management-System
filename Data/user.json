@@ -19,11 +19,11 @@
           {
                "id": "d-02",
                "name": "rahat khan",
-               "email": "rahat201@gmail.com",
+               "email": "rahatkh@gmail.com",
                "password": "12345",
-               "visit-hour": "05pm-07pm",
-               "Specialist": "Cardiac",
-               "qualification": "FCps"
+               "visit-hour": "05pm-08pm",
+               "Specialist": "neurology",
+               "qualification": "mbbs"
           }
      ]
 }

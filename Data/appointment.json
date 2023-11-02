@@ -14,13 +14,6 @@
           "date": "2023-11-01"
      },
      {
-          "id": "a-05",
-          "doctorName": "nafisa maliyat",
-          "patientName": "shilpa",
-          "time": "04pm-10pm",
-          "date": "2023-11-01"
-     },
-     {
           "id": "a-06",
           "doctorName": "nafisa maliyat",
           "patientName": "mojid uddin",
@@ -32,6 +25,13 @@
           "doctorName": "nafisa maliyat",
           "patientName": "sakibal hasan",
           "time": "04pm-10pm",
+          "date": "2023-11-02"
+     },
+     {
+          "id": "a-08",
+          "doctorName": "rahat khan",
+          "patientName": "shilpa",
+          "time": "05pm-07pm",
           "date": "2023-11-02"
      }
 ]
