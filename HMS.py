@@ -141,9 +141,8 @@ def read_appointment_info(data):
         print(f"{i['id'].upper()}\t{i['doctorName'].upper()}\t\t{i['patientName'].upper()}\t{i['time']}\t{i['date']}")
         
 # Cancel Appointment 
-def cancel_appointment(apnData, ptData):
-    id = input("Enter Appointment ID: ")
-    print(id)
+def cancel_appointment(apnData, ptData, id):
+    # id = input("Enter Appointment ID: ")
     patient = ""
 
     for i in apnData:
@@ -175,7 +174,44 @@ def read_doctor_appointment(aData, doc_name):
     for appointment in aData:
         if appointment['doctorName'] == doc_name:
             print(f"{appointment['id'].upper()}\t\t{appointment['patientName'].upper()}\t{appointment['time']}\t{appointment['date']}")
-# read_doctor_appointment(appointmentData, "nafisa maliyat")
+# create prescription for patient
+def add_prescription(pData, hData, dName, pName):
+    prsFlag = False
+    for patient in pData:
+        if patient['name'] == pName:
+            prsID = autoIdGenerator(hData, 'prs-')
+            d_Name = dName
+            p_Name = pName
+            problem = input("Enter Patient Problem: ").lower()
+            medicine = input("Enter the name of medicine: ")
+            test = input("Enter the name of test: ") 
+            
+            mdcn = medicine.split(", ")
+            tst = test.split(", ")
+            
+            prescription_obj = {
+                "id": prsID,
+                "doctorName": d_Name,
+                "patientName": p_Name,
+                "medicine": mdcn,
+                "test": tst
+            }
+            
+            patient['prescription'].append(prsID)
+            hData.append(prescription_obj)
+            print(patient, hData)
+            pData_json_obj = json.dumps(pData, indent=5)
+            hData_json_obj = json.dumps(hData, indent=5)
+            
+            write(patientPath, pData_json_obj)
+            write(prescriptionPath, hData_json_obj)
+            
+            prsFlag = True
+            break
+    if not prsFlag:
+        print("Patient name not in appointment!")
+
+# add_prescription(patientData, historyData, 'rahat khan', 'shilpa')
 # -----------Patient Part ------------------
 # show doctor in table
 def show_doctor():
@@ -265,20 +301,25 @@ def read_appointment(pData, aData):
 # See Patient History
 def see_history(patientData, historyData):
     name = input("Patient Name: ").lower()
-    for i in range(len(patientData)):
-        if name == patientData[i]['name']:
-            print(patientData[i]['prescription'])
-            prisId = input("Enter your prescription ID: ")
-            for sp in range(len(historyData)):
-                if historyData[sp]['prescriptionId'] == prisId:
-                    for key, value in historyData[sp].items():
-                        print(f"\t{key}:\t{value}")
-                    break
-            break
-        else:
-            print("You entered wrong name!")
-            break
-
+    hflag = False
+    for patient in patientData:
+        if patient['name'] == name:
+            hflag = True
+            if len(patient['prescription']) == 0:
+                print(f"{patient['name'].upper()} has no medical records.")
+                break
+            else:
+                print(patient['prescription'])
+                prisId = input("Enter your prescription ID: ").lower()
+                print("\n")
+                for sp in historyData:
+                    if sp['id'] == prisId:
+                        for key, value in sp.items():
+                            print(f"\t{key}: \t{value}")
+                print("\n")
+                break        
+    if not hflag:
+        print("You entered wrong name.")
 # ---------------Admin Menu--------------
 def admin_menu():
     while True:
@@ -309,7 +350,8 @@ def admin_menu():
             read_appointment_info(appointmentData)
             cancelApn = input("Do you want to cancel Appointment: (y/n) ").lower()
             if cancelApn == "y":
-                cancel_appointment(appointmentData, patientData)
+                apnt_id = input("Enter Appointment ID: ")
+                cancel_appointment(appointmentData, patientData, apnt_id)
             else:
                 pass
         elif choice == 3:
@@ -331,11 +373,18 @@ def doctor_menu(dct):
             read_doctor_appointment(appointmentData, dct['name'])
         elif choice == 2:
             read_patient(patientData)
-            see_history(patientData, historyData)
         elif choice == 3:
             see_history(patientData, historyData)
         elif choice == 4:
-            print("Make prescription")
+            print("Make prescription\n")
+            patient_name = input("Patient Name: ").lower()
+            add_prescription(patientData, historyData, dct['name'], patient_name)
+            p_apnt_id = ""
+            for singleapt in appointmentData:
+                if singleapt['doctorName'] == dct['name']:
+                    p_apnt_id = singleapt['id']
+                
+            cancel_appointment(appointmentData, patientData, p_apnt_id)
         elif choice == 5:
             break
         else:
@@ -393,6 +442,7 @@ while True:
                 make_appointment(patientData, userData, appointmentData)
             elif pChoice == 2:
                 read_appointment(patientData, appointmentData)
+                
             elif pChoice == 3:
                 see_history(patientData, historyData)
             elif pChoice == 4:
