@@ -324,16 +324,19 @@ def admin_menu():
 
 def doctor_menu(dct):
     while True:
-        print("\n1. Appointment Info\n2. Patient Info\n3. Make Prescription \n4. Back Main Menu")
+        print("\n1. Appointment Info\n2. Patient Info\n3. Patient Medical Record\n4. Make Prescription \n5. Back Main Menu")
         choice = int(input("Enter your choice (For Doctor) : "))
         if choice == 1:
-            print("Appointment Info")
+            print("Appointment Information")
             read_doctor_appointment(appointmentData, dct['name'])
         elif choice == 2:
             read_patient(patientData)
+            see_history(patientData, historyData)
         elif choice == 3:
-            print("Make prescription")
+            see_history(patientData, historyData)
         elif choice == 4:
+            print("Make prescription")
+        elif choice == 5:
             break
         else:
             print("Option NOt found!")
