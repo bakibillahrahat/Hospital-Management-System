@@ -138,7 +138,7 @@ def read_appointment_info(data):
     print("\nAppointment Info\n")
     print("\nID\tDoctor Name\t\tPatient Name\t\tTime\tDate\n")
     for i in data:
-        print(f"{i['id'].upper()}\t{i['doctorName'].upper()}\t\t{i['patientName'].upper()}\t{i['time']}\t{i['date']}\n")
+        print(f"{i['id'].upper()}\t{i['doctorName'].upper()}\t\t{i['patientName'].upper()}\t{i['time']}\t{i['date']}")
         
 # Cancel Appointment 
 def cancel_appointment(apnData, ptData):
@@ -168,7 +168,14 @@ def cancel_appointment(apnData, ptData):
     write(patientPath, ptData_json_obj)
     print("Appointment cancel Successfully")
 
-
+# -----------Doctor Part --------------------
+# read appointment using by doctor name
+def read_doctor_appointment(aData, doc_name):
+    print("\nID\t\tPatient Name\t\tTime\tDate\n")
+    for appointment in aData:
+        if appointment['doctorName'] == doc_name:
+            print(f"{appointment['id'].upper()}\t\t{appointment['patientName'].upper()}\t{appointment['time']}\t{appointment['date']}")
+# read_doctor_appointment(appointmentData, "nafisa maliyat")
 # -----------Patient Part ------------------
 # show doctor in table
 def show_doctor():
@@ -315,12 +322,13 @@ def admin_menu():
 
 # -----------------------------Doctor Menu--------------
 
-def doctor_menu():
+def doctor_menu(dct):
     while True:
         print("\n1. Appointment Info\n2. Patient Info\n3. Make Prescription \n4. Back Main Menu")
-        choice = int(input("Enter your choice: "))
+        choice = int(input("Enter your choice (For Doctor) : "))
         if choice == 1:
             print("Appointment Info")
+            read_doctor_appointment(appointmentData, dct['name'])
         elif choice == 2:
             read_patient(patientData)
         elif choice == 3:
@@ -341,7 +349,7 @@ def authenticate_admin(email, password, users):
 def authenticate_doctor(email, password, users):
     for doctor in users.get("doctor", []):
         if doctor["email"] == email and doctor["password"] == password:
-            doctor = doctor_menu()
+            doctor = doctor_menu(doctor)
             return doctor
     return None
 
