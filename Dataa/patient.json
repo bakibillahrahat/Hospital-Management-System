@@ -1,0 +1,65 @@
+[
+     {
+          "id": "p-01",
+          "name": "sakibal hasan",
+          "email": "sakib@gmail.com",
+          "appointment": [
+               "a-07"
+          ],
+          "prescription": [
+               "prs-01"
+          ]
+     },
+     {
+          "id": "p-02",
+          "name": "mbr",
+          "email": "mbr@gmail.com",
+          "appointment": [
+               "a-02"
+          ],
+          "prescription": [
+               "prs-02"
+          ]
+     },
+     {
+          "id": "p-03",
+          "name": "ruhit",
+          "email": "ruhit@gmail.com",
+          "appointment": [],
+          "prescription": [
+               "prs-03"
+          ]
+     },
+     {
+          "id": "p-04",
+          "name": "shilpa",
+          "email": "shilpa@gmail.com",
+          "appointment": [],
+          "prescription": [
+               "prs-02"
+          ]
+     },
+     {
+          "id": "p-05",
+          "name": "koholi",
+          "email": "koholi@gmail.com",
+          "appointment": [],
+          "prescription": []
+     },
+     {
+          "id": "p-06",
+          "name": "mbrkhan",
+          "email": "mrk@gmail.com",
+          "appointment": [],
+          "prescription": []
+     },
+     {
+          "id": "p-07",
+          "name": "mojid uddin",
+          "email": "mojid202@gmail.com",
+          "appointment": [
+               "a-06"
+          ],
+          "prescription": []
+     }
+]

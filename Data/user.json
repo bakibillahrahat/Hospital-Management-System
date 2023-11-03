@@ -1,28 +1,19 @@
 {
      "admin": [
           {
-               "name": "md. bakibillah rahat",
-               "email": "bakibillahrahat@gmail.com",
+               "name": "admin",
+               "email": "admin@gmail.com",
                "password": "12345"
           }
      ],
      "doctor": [
           {
-               "id": "d-01",
-               "name": "nafisa maliyat",
-               "email": "nafisa@gmail.com",
-               "password": "12345",
-               "visit-hour": "04pm-10pm",
-               "Specialist": "Cardiac",
-               "qualification": "MBBS"
-          },
-          {
-               "id": "d-02",
+               "id": "d-7",
                "name": "rahat khan",
-               "email": "rahatkh@gmail.com",
+               "email": "rahatkhan@gmail.com",
                "password": "12345",
-               "visit-hour": "05pm-08pm",
-               "Specialist": "neurology",
+               "visit-hour": "05pm-11pm",
+               "Specialist": "cardiac",
                "qualification": "mbbs"
           }
      ]

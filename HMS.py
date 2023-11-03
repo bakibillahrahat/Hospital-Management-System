@@ -1,5 +1,6 @@
 import json
 from datetime import date
+import random
 
 # ---------------Data Path-----------------------
 userPath = "./Data/user.json"
@@ -8,11 +9,37 @@ patientPath = "./Data//patient.json"
 prescriptionPath = "./Data/prescription.json"
 
 # -----------------File Read And Write Function ---------------------
+
+# try:
+#     # The log file exists, append new session to the file
+#     with open('log.txt', 'a') as f:
+#         f.write('New Session\n')
+# except FileNotFoundError:
+#     # The log file doesn't exist, create a blank one
+#     with open('log.txt', 'w') as f:
+#         f.write('Program Log\n')
+
     
 def read(path):
-    with open(path, 'r') as file:
-        data =  json.loads(file.read())
-        return data
+    try:
+        with open(path, 'r') as file:
+            data =  json.loads(file.read())
+            return data
+    except FileNotFoundError:
+        basicObj = {
+            "admin": [
+                        {"name": "admin",
+                        "email": "admin@gmail.com",
+                        "password": "12345"}
+                    ],
+            "doctor": []
+        }
+        with open(path, 'w') as file:
+            if path == userPath:
+                file.write(json.dumps(basicObj, indent=5))
+            else:
+                file.write(json.dumps([],indent=5))
+
 
 def write(path, obj):
     with open(path, 'w') as allData:
@@ -25,15 +52,16 @@ patientData = read(patientPath)
 historyData = read(prescriptionPath)
         
 # --------------Auto ID Generator Functions---------------------
-def autoIdGenerator(data, basePattern):
-    lastId = data[-1]['id']
-    count = int(lastId[-1])
-    id = ''
-    count += 1
-    if count < 10:
-        id = basePattern + '0' + str(count)
-    elif count > 9:
-        id = basePattern + str(count)
+def autoIdGenerator(basePattern):
+    # lastId = data[-1]['id']
+    # count = int(lastId[-1])
+    random_number = random.randint(0, 300)
+    id = basePattern + str(random_number)
+    # count += 1
+    # if count < 10:
+    #     id = basePattern + '0' + str(count)
+    # elif count > 9:
+    #     id = basePattern + str(count)
     return id
 # -----------Admin Part ------------------
 # ------------------Doctor Management----------------------- 
@@ -57,7 +85,7 @@ def add_doctor(data):
     qualification = input("Enter Doctor Qualification: ").lower()
         
     doctor_obj = {
-        "id": autoIdGenerator(data['doctor'],'d-'),
+        "id": autoIdGenerator('d-'),
         "name": name,
         "email": email,
         "password": password,
@@ -179,7 +207,7 @@ def add_prescription(pData, hData, dName, pName):
     prsFlag = False
     for patient in pData:
         if patient['name'] == pName:
-            prsID = autoIdGenerator(hData, 'prs-')
+            prsID = autoIdGenerator('prs-')
             d_Name = dName
             p_Name = pName
             problem = input("Enter Patient Problem: ").lower()
@@ -232,8 +260,8 @@ def make_appointment(pData, uData, aData):
     patient_found = False
     for doctor in userData['doctor']:
         if doctor_name == doctor['name']:    
-            aId = autoIdGenerator(aData, 'a-')
-            pId = autoIdGenerator(pData, 'p-')
+            aId = autoIdGenerator('a-')
+            pId = autoIdGenerator('p-')
             patient_name = input("Patient Name: ").lower()
             for patient in pData:
                 if patient['name'] == patient_name:

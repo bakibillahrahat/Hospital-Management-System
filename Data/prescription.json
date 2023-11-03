@@ -1,39 +1,11 @@
 [
      {
-          "id": "prs-01",
-          "doctorName": "nafisa Maliyat",
-          "patientName": "sakibal Hasan",
-          "disease": "fever",
-          "medicine": [
-               "Tylenol",
-               "Advil"
-          ],
-          "test": [
-               "CBC"
-          ]
-     },
-     {
-          "id": "prs-02",
+          "id": "prs-286",
           "doctorName": "rahat khan",
-          "patientName": "shilpa",
+          "patientName": "ruhit sharma",
           "medicine": [
                "fexo",
-               "peracitamol",
                "napa"
-          ],
-          "test": [
-               "cvc",
-               "urin",
-               "dengu"
-          ]
-     },
-     {
-          "id": "prs-03",
-          "doctorName": "rahat khan",
-          "patientName": "ruhit",
-          "medicine": [
-               "napa",
-               "fexo"
           ],
           "test": [
                "cvc",
