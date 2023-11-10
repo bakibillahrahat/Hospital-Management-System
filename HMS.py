@@ -134,7 +134,7 @@ def update_doctor(data):
 
 
 def delete_doctor(data):
-    id = input("Enter Doctor ID: ")
+    id = input("Enter Doctor ID: ").lower()
     flag = False
     for i in data['doctor']:
         if id == i['id']:
