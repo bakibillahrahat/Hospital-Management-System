@@ -8,12 +8,21 @@
      ],
      "doctor": [
           {
-               "id": "d-7",
-               "name": "rahat khan",
-               "email": "rahatkhan@gmail.com",
+               "id": "d-108",
+               "name": "md. rahat khan",
+               "email": "rahatkh@gmail.com",
                "password": "12345",
-               "visit-hour": "05pm-11pm",
-               "Specialist": "cardiac",
+               "visit-hour": "4pm-11pm",
+               "Specialist": "cardicac",
+               "qualification": "mbbs"
+          },
+          {
+               "id": "d-245",
+               "name": "nafisa maliyat",
+               "email": "nafisml@gmail.com",
+               "password": "12345",
+               "visit-hour": "3pm-10pm",
+               "Specialist": "sex specialist",
                "qualification": "mbbs"
           }
      ]
