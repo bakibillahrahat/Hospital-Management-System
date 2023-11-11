@@ -12,6 +12,7 @@ prescriptionPath = "./Data/prescription.json"
 if not os.path.exists('./Data'):
     os.mkdir('./Data')
 
+
 def read(path):
 
     try:
@@ -22,8 +23,8 @@ def read(path):
         basicObj = {
             "admin": [
                 {"name": "admin",
-                        "email": "admin@gmail.com",
-                        "password": "12345"}
+                 "email": "admin@gmail.com",
+                 "password": "12345"}
             ],
             "doctor": []
         }
@@ -46,7 +47,6 @@ appointmentData = read(appointmentPath)
 patientData = read(patientPath)
 historyData = read(prescriptionPath)
 
-    
 
 # --------------Auto ID Generator Functions---------------------
 
@@ -226,18 +226,22 @@ def read_doctor_patient(data, aData, doc_name):
     print("\nPatient Info\n")
     print("\nID\tName\t\t\tEmail\t\t\tAppointment\tPrescription")
     apnId = ""
+    flagr = False
     for appointment in aData:
         if appointment['doctorName'] == doc_name:
             apnId = appointment["id"]
 
     for i in data:
-        if (apnId in i["appointment"]):
+        if (apnId in i['appointment']):
+            flagr = True
             print(
                 f"{i['id'].upper()}\t{i['name'].upper()}\t\t{i['email']}\t{i['appointment']}\t{i['prescription']}\n")
-        else:
-            print("Today you have no patient!")
             break
+    if not flagr:
+        print("Today you have no patient!")
 
+
+# read_doctor_patient(patientData, appointmentData, 'md. rahat khan')
 
 # create prescription for patient
 
@@ -359,6 +363,7 @@ def read_appointment(pData, aData):
                 for apn in range(len(aData)):
                     if apnId == aData[apn]["id"]:
                         del aData[apn]
+                        print("Appointment successfully deleted...")
                         break
                     else:
                         pass
@@ -368,7 +373,7 @@ def read_appointment(pData, aData):
             appointmentData_json_obj = json.dumps(aData, indent=5)
             write(patientPath, patientData_json_obj)
             write(appointmentPath, appointmentData_json_obj)
-            print("Appointment successfully deleted")
+            # print("Appointment successfully deleted")
             break
 
 # See Patient History
@@ -444,8 +449,10 @@ def admin_menu():
             elif choice == 3:
                 while True:
                     try:
-                        print("\n1.Show Patient Info\n2. Delete Patient\n3. Back Previous Menu")
-                        pch = int(input("Enter your choice: (Patient Management): "))
+                        print(
+                            "\n1.Show Patient Info\n2. Delete Patient\n3. Back Previous Menu")
+                        pch = int(
+                            input("Enter your choice: (Patient Management): "))
                         if (pch == 1):
                             read_patient(patientData)
                         elif (pch == 2):
@@ -524,18 +531,19 @@ def authenticate_doctor(email, password, users):
 
 
 def login(email, password, role):
-
     authenticated_user = None
     if role == "admin":
         authenticated_user = authenticate_admin(email, password, userData)
     elif role == "doctor":
         authenticated_user = authenticate_doctor(email, password, userData)
+    else:
+        print("Login failed. Check your credentials...")
 
     if authenticated_user:
         print("Login successful")
         print("User details:", authenticated_user)
     else:
-        print("Login failed. Check your credentials.")
+        print("...")
 
 
 # ---------------------------- show option list ------------------

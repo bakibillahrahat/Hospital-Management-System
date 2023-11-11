@@ -12,9 +12,16 @@
           "id": "p-194",
           "name": "habib ullah",
           "email": "habibul@gmail.com",
-          "appointment": [
-               "a-42"
-          ],
+          "appointment": [],
+          "prescription": [
+               "prs-257"
+          ]
+     },
+     {
+          "id": "p-81",
+          "name": "rahim khan",
+          "email": "rahimkh@gmail.com",
+          "appointment": [],
           "prescription": []
      }
 ]
