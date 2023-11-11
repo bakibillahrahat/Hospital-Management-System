@@ -450,7 +450,7 @@ def admin_menu():
                 while True:
                     try:
                         print(
-                            "\n1.Show Patient Info\n2. Delete Patient\n3. Back Previous Menu")
+                            "\n1. Show Patient Info\n2. Delete Patient\n3. Back Previous Menu")
                         pch = int(
                             input("Enter your choice: (Patient Management): "))
                         if (pch == 1):
