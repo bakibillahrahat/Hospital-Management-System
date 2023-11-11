@@ -1,6 +1,7 @@
 import json
 from datetime import date
 import random
+import os
 
 # ---------------Data Path-----------------------
 userPath = "./Data/user.json"
@@ -8,8 +9,11 @@ appointmentPath = "./Data/appointment.json"
 patientPath = "./Data//patient.json"
 prescriptionPath = "./Data/prescription.json"
 
+if not os.path.exists('./Data'):
+    os.mkdir('./Data')
 
 def read(path):
+
     try:
         with open(path, 'r') as file:
             data = json.loads(file.read())
@@ -18,8 +22,8 @@ def read(path):
         basicObj = {
             "admin": [
                 {"name": "admin",
-                         "email": "admin@gmail.com",
-                         "password": "12345"}
+                        "email": "admin@gmail.com",
+                        "password": "12345"}
             ],
             "doctor": []
         }
@@ -36,10 +40,13 @@ def write(path, obj):
 
 
 # -----------------------Data--------------------------
+
 userData = read(userPath)
 appointmentData = read(appointmentPath)
 patientData = read(patientPath)
 historyData = read(prescriptionPath)
+
+    
 
 # --------------Auto ID Generator Functions---------------------
 
@@ -93,10 +100,9 @@ def update_doctor(data):
     found = False
     for doctor in data['doctor']:
         if doctor['id'] == doctor_id:
-            print(doctor_id, doctor['id'])
             found = True
             print("\nID\tName\t\t\tEmail\t\t\tVisit-Hour\tSpecialist\tQualification\n")
-            print(f"{doctor['id'].upper()}\t{doctor['name'].upper()}\t\t{doctor['email']}\t{doctor['visit-hour']}\t{doctor['Specialist']}\t\t{doctor['qualification']}\n")
+            print(f"{doctor['id'].upper()}\t{doctor['name'].upper()}\t\t{doctor['email']}\t{doctor['visit-hour']}\t{doctor['Specialist'].capitalize()}\t\t{doctor['qualification'].upper()}\n")
             print("Doctor found. Please update their information: \n")
             name = doctor['name']
             email = input("Enter Doctor Email: ")

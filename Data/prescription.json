@@ -1,41 +1,16 @@
 [
      {
-          "id": "prs-222",
-          "doctorName": "md. rahat khan",
-          "patientName": "khaled syfullah",
-          "medicine": [
-               "Napa",
-               "Fexo"
-          ],
-          "test": [
-               "CVc",
-               "Dengu"
-          ]
-     },
-     {
-          "id": "prs-142",
+          "id": "prs-275",
           "doctorName": "nafisa maliyat",
           "patientName": "rahim uddin",
           "medicine": [
                "napa",
-               "paracitamol",
-               "fexo"
+               "fexo",
+               "paracitamol"
           ],
           "test": [
-               "cbc",
-               "dengu"
-          ]
-     },
-     {
-          "id": "prs-259",
-          "doctorName": "nafisa maliyat",
-          "patientName": "d-225",
-          "medicine": [
-               "adf",
-               "adf,ow,"
-          ],
-          "test": [
-               "oso,"
+               "dengu",
+               "cvc"
           ]
      }
 ]
